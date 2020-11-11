@@ -1,0 +1,50 @@
+{
+  "name": "teste-backend",
+  "version": "1.0.0",
+  "description": "Desafio ioasys",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon --exec babel-node src/index.js",
+    "doc": "apidoc -i ./src/ -o apidoc/",
+    "debug": "node --nolazy --inspect-brk=9229 src/index.js",
+    "test-integration": "mocha --opts test/integration/mocha.opts test/integration/**/*.js",
+    "lint": "ESLint **/*.js",
+    "lint:fix": "ESLint --fix **/*.js"
+  },
+  "author": "Heverton Pires da Luz",
+  "license": "ISC",
+  "repository": {
+    "url": "https://bitbucket.org/HevertonPires/teste-backend/src/master/"
+  },
+  "dependencies": {
+    "bcrypt": "^3.0.7",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "http-status": "^1.3.2",
+    "jwt-simple": "^0.5.6",
+    "mariadb": "^2.5.1",
+    "passport": "^0.4.0",
+    "passport-jwt": "^4.0.0",
+    "sequelize": "^5.11.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.12.1",
+    "@babel/core": "^7.12.3",
+    "@babel/node": "^7.12.6",
+    "@babel/preset-env": "^7.12.1",
+    "apidoc": "^0.25.0",
+    "chai": "^4.2.0",
+    "eslint": "^7.13.0",
+    "eslint-config-standard": "^16.0.1",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.1.0",
+    "mocha": "^6.2.2",
+    "nodemon": "^1.19.4",
+    "prettier": "^2.1.2",
+    "supertest": "^4.0.2"
+  }
+}
