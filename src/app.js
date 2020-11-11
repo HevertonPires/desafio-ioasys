@@ -26,6 +26,8 @@ const auth = Authorization(app)
 app.use(auth.initialize())
 app.auth = auth
 
+app.use('/doc', Express.static('apidoc/'))
+
 RouterManager(app)
 
 export default app
