@@ -17,6 +17,7 @@ export default (sequelize, Datatype) => {
     email: {
       type: Datatype.STRING,
       allowNull: false,
+      unique: 'UQ_EMAIL',
       validate: {
         isEmail: true,
         notEmpty: true

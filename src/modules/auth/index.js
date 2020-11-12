@@ -2,9 +2,7 @@ import passport from 'passport'
 import { Strategy, ExtractJwt } from 'passport-jwt'
 
 export default (app) => {
-  const {
-    Usuarios
-  } = app.datasource.models
+  const { Usuarios } = app.datasource.models
   const opts = {
     secretOrKey: process.env.JWT_SECRET,
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken()
@@ -29,7 +27,7 @@ export default (app) => {
   return {
     initialize: () => passport.initialize(),
     authenticate: () => passport.authenticate('jwt', {
-      session: process.env.JWT_SESSION
+      session: false
     })
   }
 }

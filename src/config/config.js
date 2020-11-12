@@ -14,6 +14,6 @@ export const DB = {
       timezone: 'Etc/GMT-3'
     },
     benchmark: false,
-    logging: false
+    logging: true
   }
 }

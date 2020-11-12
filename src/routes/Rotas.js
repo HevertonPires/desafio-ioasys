@@ -1,6 +1,6 @@
-export default (app, rota, Controller, model) => {
+export default (app, rota, Controller, model, auth = true) => {
   app.route(`/${rota}`)
-    .all(app.auth.authenticate())
+    .all(auth ? app.auth.authenticate() : () => true)
     .get((req, res) => {
       const controller = new Controller(app.datasource.models[model], req)
       controller.getAll()
@@ -26,7 +26,7 @@ export default (app, rota, Controller, model) => {
         })
     })
   app.route(`/${rota}/:codigo`)
-    .all(app.auth.authenticate())
+    .all(auth ? app.auth.authenticate() : () => true)
     .get((req, res) => {
       const controller = new Controller(app.datasource.models[model], req)
       controller.getById(req.params)
