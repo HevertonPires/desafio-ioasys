@@ -14,5 +14,11 @@ export default (sequelize, Datatype) => {
     }
   })
 
+  filmes.associate = (models) => {
+    filmes.hasMany(models.Atores, { foreignKey: 'filme' })
+    filmes.hasMany(models.Generos, { foreignKey: 'filme' })
+    filmes.hasMany(models.Diretores, { foreignKey: 'filme' })
+  }
+
   return filmes
 }

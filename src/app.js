@@ -6,6 +6,7 @@ import Config from './config/config'
 import Authorization from './modules/auth'
 import Cors from 'cors'
 import { DATA_SOURCE } from './config/datasource'
+import { BLOCK_ROTA } from './middlewares/BlockRota'
 
 const app = Express()
 
@@ -25,6 +26,8 @@ app.use(Cors())
 const auth = Authorization(app)
 app.use(auth.initialize())
 app.auth = auth
+
+app.use(BLOCK_ROTA)
 
 app.use('/doc', Express.static('apidoc/'))
 

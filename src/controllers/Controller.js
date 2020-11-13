@@ -18,10 +18,9 @@ export default class Controller {
 
   async getAll () {
     try {
-      const result = await this.controle.findAll({
-        include: this.includesConsulta,
-        where: { ativo: true }
-      })
+      const config = { include: this.includesConsulta }
+      await this.antesGetAll(config)
+      const result = await this.modelo.findAll(config)
       return defaultResponse(result)
     } catch (error) {
       console.log(error)
@@ -31,8 +30,14 @@ export default class Controller {
 
   async getAllFilter (params) {
     try {
-      params.ativo = true
-      const result = await this.controle.findAll({ where: params })
+      const config = {
+        include: this.includesConsulta,
+        where: {
+          ...params
+        }
+      }
+      await this.antesGetAllFilter(config)
+      const result = await this.modelo.findAll(config)
       return defaultResponse(result)
     } catch (error) {
       return errorResponse(error.message, HttpStatus.UNPROCESSABLE_ENTITY)
@@ -41,20 +46,14 @@ export default class Controller {
 
   async getById (params) {
     try {
-      const result = await this.controle.findByPk(params.codigo, {
+      const config = {
         include: this.includesConsulta,
-        where: { ativo: true }
-      })
-      return defaultResponse(result)
-    } catch (error) {
-      return errorResponse(error.message, HttpStatus.UNPROCESSABLE_ENTITY)
-    }
-  }
-
-  async getOne (params) {
-    try {
-      params.ativo = true
-      const result = await this.controle.findOne({ where: params })
+        where: {
+          ...params
+        }
+      }
+      await this.antesGetById(config)
+      const result = await this.modelo.findOne(config)
       return defaultResponse(result)
     } catch (error) {
       return errorResponse(error.message, HttpStatus.UNPROCESSABLE_ENTITY)
@@ -64,7 +63,7 @@ export default class Controller {
   async create (data) {
     try {
       await this.antesCriar(data)
-      const result = await this.modelo.create(data)
+      const result = await this.modelo.create(data, { include: [{ all: true }] })
       await this.depoisCriar(result)
       return defaultResponse(result, HttpStatus.CREATED)
     } catch (error) {
@@ -74,10 +73,10 @@ export default class Controller {
 
   async update (data, params) {
     try {
-      params.ativo = true
-      const registro = await this.modelo.findOne({ where: params })
+      const config = { where: params }
+      await this.antesAtualizar(data, config)
+      const registro = await this.modelo.findOne(config)
       if (!registro) return errorResponse(`Registro de código ${params.codigo} não encontrado`, HttpStatus.BAD_REQUEST)
-      await this.antesAtualizar(data)
       const result = await this.modelo.update(data, { where: params })
       await this.depoisAtualizar()
       return defaultResponse(result)
@@ -88,7 +87,7 @@ export default class Controller {
 
   async delete ({ codigo }) {
     try {
-      const registro = await this.modelo.findByPk(codigo, { where: { ativo: true } })
+      const registro = await this.modelo.findByPk(codigo)
       if (registro) {
         registro.ativo = false
         await registro.save()
@@ -102,8 +101,12 @@ export default class Controller {
 
   // #region *** Hooks ***
   async antesCriar (dadosBody) {}
-  async antesAtualizar (dadosBody) {}
+  async antesAtualizar (dadosBody, configConsulta) {}
   async depoisCriar (registro) {}
-  async depoisAtualizar (registroAnt, registroNew) {}
+  async depoisAtualizar (registroAnt, registroNew) { }
+  async antesGetAll (configConsulta) {}
+  async antesGetAllFilter (configConsulta) {}
+  async antesGetOne (configConsulta) {}
+  async antesGetById (configConsulta) {}
   // #endregion
 }

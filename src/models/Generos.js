@@ -12,10 +12,13 @@ export default (sequelize, Datatype) => {
         notEmpty: true
       }
     },
-    ativo: {
-      type: Datatype.BOOLEAN,
+    filme: {
+      type: Datatype.INTEGER,
       allowNull: false,
-      defaultValue: true
+      references: {
+        key: 'codigo',
+        model: 'Filmes'
+      }
     }
   })
 

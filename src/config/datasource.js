@@ -54,7 +54,7 @@ export const DATA_SOURCE = () => {
 
     // Carrga os modelos de forma dinamica para propriedade models
     database.models = loadModels(sequelize)
-    sequelize.sync({ force: true }).done(() => database)
+    sequelize.sync({ force: false }).done(() => database)
   }
 
   return database

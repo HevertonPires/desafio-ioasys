@@ -24,7 +24,6 @@ export default class UsuariosController extends Controller {
       const usuario = await this.modelo.findOne({ where: { email } })
       if (usuario && this.isSenha(usuario.senha, senha)) {
         const token = jwt.encode({ codigo: usuario.codigo, admin: usuario.admin }, process.env.JWT_SECRET)
-
         return res.status(HttpStatus.OK).json({ usuario, token })
       }
       res.status(HttpStatus.UNAUTHORIZED).json('Login ou senha incorreto(s)')
@@ -34,10 +33,34 @@ export default class UsuariosController extends Controller {
   }
 
   antesCriar (dadosBody) {
-    if (this.request.path === '/admin') {
+    if (this.request.path.includes('/usuario', 0)) {
       dadosBody.admin = true
       return
     }
     dadosBody.admin = false
+    ''.includes()
+  }
+
+  antesAtualizar (dadosBody, configConsulta) {
+    if (this.request.path.includes('/usuario', 0)) {
+      dadosBody.admin = false
+    }
+    if (!this.request.userAdm) configConsulta.where.admin = false
+  }
+
+  _filterConsultas (config) {
+    Object.assign(config, { where: { ativo: true, admin: this.request.userAdm } })
+  }
+
+  antesGetAll (config) {
+    this._filterConsultas(config)
+  }
+
+  antesGetAllFilter (config) {
+    this._filterConsultas(config)
+  }
+
+  antesGetById (config) {
+    this._filterConsultas(config)
   }
 }

@@ -9,7 +9,7 @@ export default (app) => {
   }
 
   const strategy = new Strategy(opts, (payload, done) => {
-    Usuarios.findByPk(payload.codigo)
+    Usuarios.findOne({ where: { codigo: payload.codigo, ativo: true } })
       .then((usuario) => {
         if (usuario) {
           return done(null, {
@@ -26,8 +26,6 @@ export default (app) => {
 
   return {
     initialize: () => passport.initialize(),
-    authenticate: () => passport.authenticate('jwt', {
-      session: false
-    })
+    authenticate: () => passport.authenticate('jwt', { session: false })
   }
 }

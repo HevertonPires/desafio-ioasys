@@ -11,6 +11,14 @@ export default (sequelize, Datatype) => {
       validate: {
         notEmpty: true
       }
+    },
+    filme: {
+      type: Datatype.INTEGER,
+      allowNull: false,
+      references: {
+        key: 'codigo',
+        model: 'Filmes'
+      }
     }
   })
 
