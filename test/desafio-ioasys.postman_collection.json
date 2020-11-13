@@ -8,11 +8,21 @@
 		{
 			"name": "/login",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"email\": \"jj@gmail.com\",\r\n    \"senha\": \"123\"\r\n}",
+					"raw": "{\r\n    \"email\": \"admin@ioasys.com\",\r\n    \"senha\": \"123\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -162,7 +172,14 @@
 			"name": "/usuario",
 			"request": {
 				"auth": {
-					"type": "noauth"
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{TOKEN}}",
+							"type": "string"
+						}
+					]
 				},
 				"method": "POST",
 				"header": [],
@@ -241,7 +258,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"nome\": \"AS PANTERAS\",\n    \"atores\": [\n        {\n            \"codigo\": 1\n        }\n    ],\n    \"generos\": [\n        {\n            \"codigo\": 1\n        }\n    ],\n    \"diretores\": [\n        {\n            \"nome\": \"Kiko\"\n        }\n    ]\n}",
+					"raw": "{\n    \"nome\": \"Mercenarios\",\n    \"atores\": [\n        {\n            \"nome\": \"Jose\"\n        }\n    ],\n    \"generos\": [\n        {\n            \"nome\": \"Drama\"\n        }\n    ],\n    \"diretores\": [\n        {\n            \"nome\": \"Teste\"\n        }\n    ]\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -362,7 +379,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "{{TOKEN_USER}}",
+							"value": "{{TOKEN}}",
 							"type": "string"
 						}
 					]
