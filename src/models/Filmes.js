@@ -11,13 +11,19 @@ export default (sequelize, Datatype) => {
       validate: {
         notEmpty: true
       }
+    },
+    ativo: {
+      type: Datatype.BOOLEAN,
+      allowNull: false,
+      defaultValue: true
     }
   })
 
   filmes.associate = (models) => {
-    filmes.hasMany(models.Atores, { foreignKey: 'filme' })
-    filmes.hasMany(models.Generos, { foreignKey: 'filme' })
-    filmes.hasMany(models.Diretores, { foreignKey: 'filme' })
+    filmes.belongsToMany(models.Atores, { through: { model: models.FilmesAtores }, foreignKey: 'filme', as: 'atores' })
+    filmes.belongsToMany(models.Generos, { through: { model: models.FilmesGeneros }, foreignKey: 'filme', as: 'generos' })
+    filmes.belongsToMany(models.Diretores, { through: { model: models.FilmesDiretores }, foreignKey: 'filme', as: 'diretores' })
+    filmes.hasMany(models.Votos, { foreignKey: 'filme', as: 'votos' })
   }
 
   return filmes

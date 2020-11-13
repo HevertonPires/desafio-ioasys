@@ -1,5 +1,0 @@
---require babel-core/register 
---require babel-polyfill
---require test/integration/helpers.js
---reporter spec
---slow 5000

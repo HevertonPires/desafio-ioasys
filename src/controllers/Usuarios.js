@@ -4,7 +4,6 @@ import jwt from 'jwt-simple'
 import Bcrypt from 'bcrypt'
 
 export default class UsuariosController extends Controller {
-  // eslint-disable-next-line no-useless-constructor
   constructor (Usuarios, req) {
     super(Usuarios)
     this.request = req
@@ -34,29 +33,29 @@ export default class UsuariosController extends Controller {
 
   antesCriar (dadosBody) {
     if (this.request.path.includes('/usuario', 0)) {
-      dadosBody.admin = true
+      dadosBody.admin = false
       return
     }
-    dadosBody.admin = false
-    ''.includes()
+    dadosBody.admin = true
   }
 
   antesAtualizar (dadosBody, configConsulta) {
-    if (this.request.path.includes('/usuario', 0)) {
-      dadosBody.admin = false
+    if (!this.request.userAdm) { // se não é um usuario adiministrador
+      if (this.request.path.includes('/usuario', 0)) configConsulta.where.admin = false // define filtro somente para usuarios não administradores
+      if (dadosBody?.admin) delete dadosBody.admin // remove a propriedade pois usuario não pode definir a mesma
     }
-    if (!this.request.userAdm) configConsulta.where.admin = false
   }
 
   _filterConsultas (config) {
-    Object.assign(config, { where: { ativo: true, admin: this.request.userAdm } })
+    if (this.request.path.includes('/admin', 0)) {
+      Object.assign(config, { where: { admin: true } }) // Gets para admin só pode aparecer admins
+      return
+    }
+
+    Object.assign(config, { where: { admin: false } }) // Gets para usuarios só pode aparecer usuarios
   }
 
   antesGetAll (config) {
-    this._filterConsultas(config)
-  }
-
-  antesGetAllFilter (config) {
     this._filterConsultas(config)
   }
 

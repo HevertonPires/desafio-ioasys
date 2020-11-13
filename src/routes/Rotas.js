@@ -1,9 +1,9 @@
 export default (app, rota, Controller, model) => {
   app.route(`/${rota}`)
-    // .all(app.auth.authenticate())
+    .all(app.auth.authenticate())
     .get((req, res) => {
       const controller = new Controller(app.datasource.models[model], req)
-      controller.getAll()
+      controller.getAllFilter(req.body)
         .then(response => {
           res.status(response.statusCode)
           res.json(response.data)

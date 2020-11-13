@@ -1,43 +1,51 @@
 import Controller from './Controller'
 
 export default class FilmesController extends Controller {
-  // eslint-disable-next-line no-useless-constructor
   constructor (Filmes, req) {
     super(Filmes)
-    this.includesConsulta = [{ all: true, attributes: { through: [] } }]
+    this.request = req
+    this.includesConsulta = [{
+      association: 'diretores',
+      through: {
+        attributes: []
+      }
+    }, {
+      association: 'atores',
+      through: {
+        attributes: []
+      }
+    }, {
+      association: 'generos',
+      through: {
+        attributes: []
+      }
+    }, {
+      association: 'votos',
+      include: [{ association: 'usuarios', attributes: ['codigo', 'nome'] }]
+    }]
   }
 
-  // antesCriar(dadosBody) {
-  //   if (this.request.path === '/admin') {
-  //     dadosBody.admin = true
-  //     return
-  //   }
-  //   dadosBody.admin = false
-  // }
+  _calcularMediaVotos (votos) {
+    const dadosMedia = votos.reduce((acc, val) => {
+      acc.somaTotal += val.avaliacao
+      acc.quantidade += 1
+      return acc
+    }, {
+      somaTotal: 0,
+      quantidade: 0
+    })
 
-  // antesAtualizar(dadosBody) {
-  //   if (this.request.path === '/usuario') {
-  //     dadosBody.admin = false
-  //   }
-  // }
+    return parseFloat((dadosMedia.somaTotal / dadosMedia.quantidade).toFixed(2))
+  }
 
-  // _filterConsultas(config) {
-  //   if (this.request.path === '/admin') {
-  //     config.where.admin = true
-  //     return
-  //   }
-  //   config.where.admin = false
-  // }
+  depoisGetAll (registros) {
+    for (const registro of registros) {
+      registro.dataValues.mediaVotos = this._calcularMediaVotos(registro.votos) || 0
+    }
+  }
 
-  // antesGetAll(config) {
-  //   this._filterConsultas(config)
-  // }
-
-  // antesGetAllFilter(config) {
-  //   this._filterConsultas(config)
-  // }
-
-  // antesGetById(config) {
-  //   this._filterConsultas(config)
-  // }
+  depoisGetById (registro) {
+    if (!registro) return
+    registro.dataValues.mediaVotos = this._calcularMediaVotos(registro.votos) || 0
+  }
 }

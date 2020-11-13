@@ -74,3 +74,16 @@ Você deverá criar uma API que o site [IMDb](https://www.imdb.com/) irá consul
   2. https://sailsjs.com/
 
 - Guideline rails http://guides.rubyonrails.org/index.html
+
+# 🖥 Utilização
+
+ - Collections postman estão na pasta test
+ - Usuario default
+ 
+    `{
+      "email": "admin@ioasys.com",
+      "senha": "123"
+    }` 
+    
+- Configure `.env` com os dados do banco
+- Configure o arquivo `src\config\database.js` para configuração do migrations

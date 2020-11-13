@@ -12,15 +12,16 @@ export default (sequelize, Datatype) => {
         notEmpty: true
       }
     },
-    filme: {
-      type: Datatype.INTEGER,
+    ativo: {
+      type: Datatype.BOOLEAN,
       allowNull: false,
-      references: {
-        key: 'codigo',
-        model: 'Filmes'
-      }
+      defaultValue: true
     }
   })
+
+  diretores.associate = (models) => {
+    diretores.belongsToMany(models.Filmes, { through: { model: models.FilmesDiretores }, foreignKey: 'diretor', as: 'diretor' })
+  }
 
   return diretores
 }
